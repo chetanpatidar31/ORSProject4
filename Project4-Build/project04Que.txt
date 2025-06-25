@@ -1,0 +1,90 @@
+before login
+
+1. Kya lekar ayee ho ?.
+2. what is ORSProject-4 ?.
+3. ORSProject-4 kese banaya ?
+4. by default index.jsp hi kyon open hota hai ?
+5. index.jsp page pe link or image kese lahai ?
+6. What is link ?
+7. Welcome.jsp kese opne hua ?
+8. How to include header.jsp or footer.jsp ?
+9. what is direct link or indirect lint ?
+10. hi, guest kiske scop mai hai ?
+11. how many scopes in your application ?
+12. copyright ka symbol kese aya ?
+13. Link ko seprate kese kiya ?
+14. what is url ?
+15. what is uri ?
+16. how to deploye project on server ?
+17. what is mvc ?
+16. what is mvc guidelines ?
+17. LoginView.jsp kese open hua ?
+18. login or password ki field kese banai ?
+19. what is input validation ?
+20. what is business validation ?
+21. flow of input validation ?
+23. flow of business validation ?
+24. flow of Authenticate ?
+25. flow of business validation in loginView.jsp ?
+26. flow of business validation in userRegistrationView.jsp ?
+27. field of gender in userRegistrationView.jsp ? 
+28. inputvalidation in userRegistrationView.jsp ?
+29. by default role in userRegistrationView.jsp ? 
+30. Authentication ka flow ?
+31. hi, firstName or role kese aya ?
+32. header pe sari link kese show hui ?
+
+after login
+
+33. Flow of userList ? 
+34. Userlist pe click kiya to 10 records hi kyon aye ?
+35. how to applay pagination in your application ?
+36. search field kese lagai ?
+37. flow of user delete ?
+38. what is where 1=1?
+39. search field kese lahai ?
+40. what is preload ?
+41. preload kese lagai ?
+42. flow of user delete ?
+43. merit marksheet list ki query ?
+44. edit ki link kese banai ?
+45. edit pe click kiya tho data fill hoke kesea aya ?
+46. edit pe click kiya tho model ki konsi method chali ?
+47. what is business data ?
+48. what is non-business data ?
+49. what is non-business primary key ?
+50. what is business primary key ?
+51. non-business primary key kese banai ?
+52. what is java doc and how to applay ?
+53. system.properties ke parameter ?
+54. userModel ki methods ke return type ?
+55. userModel ki methods ki queries ?
+56. how many design pattern use in application ?
+1. frontCtl design pattern ?
+2. Builder design pattern ?
+3. SingleTon design pattern ?
+4. fectory design pattern ?
+
+
+
+Q : - what is frontCtl ?
+Q : - how to applay frontCtl ?
+Q : - Filter ki life cycle method ?
+Q : - frontCtl kaha kaha pe applay kiya ?
+Q : - frontCtl me konsa design pattern use kiya hai ?
+
+
+
+queries :-
+userModel
+
+
+
+productBean.java
+create table st_product
+productModel.java
+productModelTest.java
+productView.jsp
+productCtl.java
+productListCtl.java
+productListView.jsp
