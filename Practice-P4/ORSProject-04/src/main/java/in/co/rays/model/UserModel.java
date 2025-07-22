@@ -154,7 +154,7 @@ public class UserModel {
 		}
 	}
 
-	public UserBean findByPk(int id) throws ApplicationException {
+	public UserBean findByPk(long id) throws ApplicationException {
 		UserBean bean = null;
 		Connection conn = null;
 
@@ -181,8 +181,8 @@ public class UserModel {
 				bean.setCreatedDatetime(rs.getTimestamp(12));
 				bean.setModifiedDatetime(rs.getTimestamp(13));
 
-				JDBCDataSource.closeConnection(rs, pstmt);
 			}
+			JDBCDataSource.closeConnection(rs, pstmt);
 		} catch (Exception e) {
 			throw new ApplicationException("Exception : Exception in getting User by PK");
 		} finally {
@@ -276,6 +276,26 @@ public class UserModel {
 
 	public List<UserBean> search(UserBean bean, int pageNo, int pageSize) throws ApplicationException {
 		StringBuffer sql = new StringBuffer("select * from st_user where 1=1");
+		
+		if (bean != null) {
+			if (bean.getFirstName() != null && bean.getFirstName().length() > 0) {
+				sql.append(" and first_name like '" + bean.getFirstName() + "%'");
+			}
+
+			if (bean.getDob() != null) {
+				System.out.println("search method in if of dob");
+				sql.append(" and dob = '" + new java.sql.Date(bean.getDob().getTime()) + "'");
+			}
+
+			if (bean.getRoleId() > 0) {
+				sql.append(" and role_id = " + bean.getRoleId());
+			}
+
+			if (bean.getLogin() != null && bean.getLogin().length() > 0) {
+				sql.append(" and login like '" + bean.getLogin() + "%'");
+			}
+			
+		}
 
 		if (pageSize > 0) {
 			pageNo = (pageNo - 1) * pageSize;

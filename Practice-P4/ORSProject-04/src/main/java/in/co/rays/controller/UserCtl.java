@@ -147,6 +147,23 @@ public class UserCtl extends BaseCtl {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String op = DataUtility.getString(request.getParameter("operation"));
+		
+		UserModel model = new UserModel();
+		
+		long id = DataUtility.getLong(request.getParameter("id"));
+		
+		if (id > 0 || op != null) {
+			UserBean bean;
+			try {
+				bean = model.findByPk(id);
+				ServletUtility.setBean(bean, request);
+			} catch (ApplicationException e) {
+				e.printStackTrace();
+				return;
+			}
+		}
+		
 		ServletUtility.forward(getView(), request, response);
 	}
 
@@ -192,7 +209,7 @@ public class UserCtl extends BaseCtl {
 				ServletUtility.setSuccessMessage("Login id already exists", request);
 			}
 		}else if (OP_CANCEL.equalsIgnoreCase(op)) {
-			ServletUtility.redirect(ORSView.USER_CTL, request, response);
+			ServletUtility.redirect(ORSView.USER_LIST_CTL, request, response);
 			return;
 		}else if (OP_RESET.equalsIgnoreCase(op)) {
 			ServletUtility.redirect(ORSView.USER_CTL, request, response);

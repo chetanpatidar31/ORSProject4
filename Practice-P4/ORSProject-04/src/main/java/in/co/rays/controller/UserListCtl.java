@@ -1,7 +1,6 @@
 package in.co.rays.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -38,8 +37,10 @@ public class UserListCtl extends BaseCtl {
 		UserBean bean = new UserBean();
 
 		bean.setFirstName(DataUtility.getString(request.getParameter("firstName")));
-		bean.setLastName(DataUtility.getString(request.getParameter("login")));
+		bean.setLogin(DataUtility.getString(request.getParameter("login")));
 		bean.setRoleId(DataUtility.getLong(request.getParameter("roleId")));
+		bean.setDob(DataUtility.getDate(request.getParameter("dob")));
+
 
 		return bean;
 	}
@@ -52,30 +53,109 @@ public class UserListCtl extends BaseCtl {
 		int pageSize = DataUtility.getInt(PropertyReader.getValue("page.size"));
 
 		UserModel model = new UserModel();
-		UserBean bean = (UserBean) populateBean(request); 
+		UserBean bean = (UserBean) populateBean(request);
 
 		try {
 			List<UserBean> list = model.search(bean, pageNo, pageSize);
 			List<UserBean> next = model.search(bean, pageNo + 1, pageSize);
-			
-              if (list == null || list.isEmpty()) {
-                ServletUtility.setErrorMessage("No record found", request);
-            }
 
-            ServletUtility.setList(list, request);
-            ServletUtility.setPageNo(pageNo, request);
-            ServletUtility.setPageSize(pageSize, request);
-            ServletUtility.setBean(bean, request);
-            request.setAttribute("nextListSize", next.size());
+			System.out.print("next is empty : ");
+			System.out.println(next.isEmpty() ? true : false);
 
-            ServletUtility.forward(getView(), request, response);
-			
+			System.out.println("is null :" + next == null ? true : false);
+
+			if (list == null || list.isEmpty()) {
+				ServletUtility.setErrorMessage("No record found", request);
+			}
+
+			ServletUtility.setList(list, request);
+			ServletUtility.setPageNo(pageNo, request);
+			ServletUtility.setPageSize(pageSize, request);
+			ServletUtility.setBean(bean, request);
+			request.setAttribute("nextListSize", next.size());
+
+			ServletUtility.forward(getView(), request, response);
+
 		} catch (ApplicationException e) {
 
 			e.printStackTrace();
 		}
 
 		ServletUtility.forward(getView(), request, response);
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		List list = null;
+		List next = null;
+
+		int pageNo = DataUtility.getInt(request.getParameter("PageNo"));
+		int pageSize = DataUtility.getInt(request.getParameter("pageSize"));
+
+		pageNo = (pageNo == 0) ? 1 : pageNo;
+		pageSize = (pageSize == 0) ? DataUtility.getInt(PropertyReader.getValue("page.size")) : pageSize;
+
+		UserBean bean = (UserBean) populateBean(request);
+		UserModel model = new UserModel();
+
+		String op = DataUtility.getString(request.getParameter("operation"));
+		String[] ids = request.getParameterValues("ids");
+
+		try {
+
+			if (OP_SEARCH.equalsIgnoreCase(op) || OP_NEXT.equalsIgnoreCase(op) || OP_PREVIOUS.equalsIgnoreCase(op)) {
+				if (OP_SEARCH.equalsIgnoreCase(op)) {
+					pageNo = 1;
+				} else if (OP_NEXT.equalsIgnoreCase(op)) {
+					pageNo++;
+				} else if (OP_PREVIOUS.equalsIgnoreCase(op) && pageNo > 1) {
+					pageNo--;
+				}
+			} else if (OP_NEW.equalsIgnoreCase(op)) {
+				ServletUtility.redirect(ORSView.USER_CTL, request, response);
+				return;
+			} else if (OP_DELETE.equalsIgnoreCase(op)) {
+				pageNo = 1;
+				if (ids != null && ids.length > 0) {
+					UserBean deleteBean = new UserBean();
+					for (String id : ids) {
+						deleteBean.setId(DataUtility.getLong(id));
+						model.delete(deleteBean);
+						ServletUtility.setSuccessMessage("Data deleted Succesfully", request);
+					}
+				} else {
+					ServletUtility.setErrorMessage("Select atleast One Record", request);
+				}
+			} else if (OP_RESET.equalsIgnoreCase(op)) {
+				ServletUtility.redirect(ORSView.USER_LIST_CTL, request, response);
+				return;
+			} else if (OP_BACK.equalsIgnoreCase(op)) {
+				ServletUtility.redirect(ORSView.USER_LIST_CTL, request, response);
+				return;
+			}
+
+			list = model.search(bean, pageNo, pageSize);
+			next = model.search(bean, pageNo + 1, pageSize);
+
+			if (!OP_DELETE.equalsIgnoreCase(op)) {
+				if (list == null || list.size() == 0) {
+					ServletUtility.setErrorMessage("No Records Found", request);
+				}
+			}
+
+			ServletUtility.setList(list, request);
+			ServletUtility.setPageNo(pageNo, request);
+			ServletUtility.setPageSize(pageSize, request);
+			ServletUtility.setBean(bean, request);
+			request.setAttribute("nextListSize", next.size());
+
+			ServletUtility.forward(getView(), request, response);
+		} catch (ApplicationException e) {
+			e.printStackTrace();
+			return;
+		}
+
 	}
 
 	@Override
