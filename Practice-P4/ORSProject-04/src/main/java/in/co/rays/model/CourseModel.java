@@ -212,6 +212,13 @@ public class CourseModel {
 	public List<CourseBean> search(CourseBean bean, int pageNo, int pageSize) throws ApplicationException {
 		StringBuffer sql = new StringBuffer("select * from st_course where 1=1 ");
 
+		if (bean != null) {
+
+			if (bean.getName() != null && bean.getName().length() > 0) {
+				sql.append("and name like '" + bean.getName() + "%'");
+			}
+		}
+
 		if (pageSize > 0) {
 			pageNo = (pageNo - 1) * pageSize;
 			sql.append(" limit " + pageNo + ", " + pageSize);

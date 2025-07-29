@@ -42,7 +42,7 @@ public class UserCtl extends BaseCtl {
 			request.setAttribute("firstName", PropertyReader.getValue("error.require", "First Name"));
 			isValid = false;
 		} else if (!DataValidator.isName(request.getParameter("firstName"))) {
-			request.setAttribute("firstName", "Invalid First Name");
+			request.setAttribute("firstName", PropertyReader.getValue("error.invalid", "First Name"));
 			isValid = false;
 		}
 
@@ -50,7 +50,7 @@ public class UserCtl extends BaseCtl {
 			request.setAttribute("lastName", PropertyReader.getValue("error.require", "Last Name"));
 			isValid = false;
 		} else if (!DataValidator.isName(request.getParameter("lastName"))) {
-			request.setAttribute("lastName", "Invalid Last Name");
+			request.setAttribute("lastName", PropertyReader.getValue("error.invalid", "Last Name"));
 			isValid = false;
 		}
 
@@ -107,7 +107,7 @@ public class UserCtl extends BaseCtl {
 			request.setAttribute("mobileNo", "Mobile No must have 10 digits");
 			isValid = false;
 		} else if (!DataValidator.isPhoneNo(request.getParameter("mobileNo"))) {
-			request.setAttribute("mobileNo", "Invalid Mobile No");
+			request.setAttribute("mobileNo", PropertyReader.getValue("error.invalid", "Mobile No"));
 			isValid = false;
 		}
 
@@ -147,13 +147,12 @@ public class UserCtl extends BaseCtl {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String op = DataUtility.getString(request.getParameter("operation"));
-		
-		UserModel model = new UserModel();
-		
+
 		long id = DataUtility.getLong(request.getParameter("id"));
-		
-		if (id > 0 || op != null) {
+
+		UserModel model = new UserModel();
+
+		if (id > 0) {
 			UserBean bean;
 			try {
 				bean = model.findByPk(id);
@@ -163,7 +162,7 @@ public class UserCtl extends BaseCtl {
 				return;
 			}
 		}
-		
+
 		ServletUtility.forward(getView(), request, response);
 	}
 
@@ -172,17 +171,19 @@ public class UserCtl extends BaseCtl {
 			throws ServletException, IOException {
 
 		String op = DataUtility.getString(request.getParameter("operation"));
-		
+
 		UserModel model = new UserModel();
-		
+
+		long id = DataUtility.getLong(request.getParameter("id"));
+
 		if (OP_SAVE.equalsIgnoreCase(op)) {
-			UserBean bean =(UserBean) populateBean(request);
-			
+			UserBean bean = (UserBean) populateBean(request);
+
 			try {
 				model.add(bean);
 				ServletUtility.setBean(bean, request);
 				ServletUtility.setSuccessMessage("User Add Successful", request);
-				
+
 			} catch (ApplicationException e) {
 				e.printStackTrace();
 				return;
@@ -193,29 +194,29 @@ public class UserCtl extends BaseCtl {
 			}
 		} else if (OP_UPDATE.equalsIgnoreCase(op)) {
 			UserBean bean = (UserBean) populateBean(request);
-			
+
 			try {
-				if (bean.getId()>0) {					
+				if (id > 0) {
 					model.update(bean);
 				}
-				ServletUtility.setBean( bean, request);
-				ServletUtility.setSuccessMessage("User Updated Succesful !", request);
-				
+				ServletUtility.setBean(bean, request);
+				ServletUtility.setSuccessMessage("User Updated Succesfully !", request);
+
 			} catch (ApplicationException e) {
 				e.printStackTrace();
 				return;
 			} catch (DuplicateRecordException e) {
 				ServletUtility.setBean(bean, request);
-				ServletUtility.setSuccessMessage("Login id already exists", request);
+				ServletUtility.setErrorMessage("Login id already exists", request);
 			}
-		}else if (OP_CANCEL.equalsIgnoreCase(op)) {
+		} else if (OP_CANCEL.equalsIgnoreCase(op)) {
 			ServletUtility.redirect(ORSView.USER_LIST_CTL, request, response);
 			return;
-		}else if (OP_RESET.equalsIgnoreCase(op)) {
+		} else if (OP_RESET.equalsIgnoreCase(op)) {
 			ServletUtility.redirect(ORSView.USER_CTL, request, response);
 			return;
 		}
-		
+
 		ServletUtility.forward(getView(), request, response);
 	}
 

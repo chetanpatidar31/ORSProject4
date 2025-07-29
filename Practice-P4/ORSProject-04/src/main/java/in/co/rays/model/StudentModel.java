@@ -133,7 +133,7 @@ public class StudentModel {
 		}
 	}
 
-	public void delete(StudentBean bean) throws ApplicationException, DuplicateRecordException {
+	public void delete(StudentBean bean) throws ApplicationException {
 
 		Connection conn = null;
 
@@ -241,7 +241,23 @@ public class StudentModel {
 	}
 
 	public List<StudentBean> search(StudentBean bean, int pageNo, int pageSize) throws ApplicationException {
+
 		StringBuffer sql = new StringBuffer("select * from st_student where 1=1 ");
+
+		if (bean != null) {
+
+			if (bean.getFirstName() != null && bean.getFirstName().length() > 0) {
+				sql.append("and first_name like '" + bean.getFirstName() + "%'");
+			}
+
+			if (bean.getLastName() != null && bean.getLastName().length() > 0) {
+				sql.append("and last_name like '" + bean.getLastName() + "%'");
+			}
+
+			if (bean.getEmail() != null && bean.getEmail().length() > 0) {
+				sql.append("and email like '" + bean.getEmail() + "%'");
+			}
+		}
 
 		if (pageSize > 0) {
 			pageNo = (pageNo - 1) * pageSize;

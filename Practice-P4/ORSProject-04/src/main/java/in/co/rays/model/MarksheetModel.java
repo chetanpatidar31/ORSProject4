@@ -40,7 +40,7 @@ public class MarksheetModel {
 		MarksheetBean existBean = findByRollNo(bean.getRollNo());
 
 		if (existBean != null) {
-			throw new DuplicateRecordException("Marksheet Name already Exist");
+			throw new DuplicateRecordException("Roll no. already Exist");
 		}
 
 		long pk = nextPk();
@@ -82,10 +82,14 @@ public class MarksheetModel {
 
 	public void update(MarksheetBean bean) throws ApplicationException, DuplicateRecordException {
 
+		StudentModel stModel = new StudentModel();
+		StudentBean stBean = stModel.findByPk(bean.getStudentId());
+		bean.setName(stBean.getFirstName() + " " + stBean.getLastName());
+
 		MarksheetBean existBean = findByRollNo(bean.getRollNo());
 
 		if (existBean != null && existBean.getId() != bean.getId()) {
-			throw new DuplicateRecordException("Marksheet Name already Exist");
+			throw new DuplicateRecordException("Roll no. already Exist");
 		}
 
 		Connection conn = null;
@@ -226,6 +230,18 @@ public class MarksheetModel {
 
 	public List<MarksheetBean> search(MarksheetBean bean, int pageNo, int pageSize) throws ApplicationException {
 		StringBuffer sql = new StringBuffer("select * from st_marksheet where 1=1 ");
+
+		if (bean != null) {
+
+			if (bean.getName() != null && bean.getName().length() > 0) {
+				sql.append("and name like '" + bean.getName() + "%'");
+			}
+
+			if (bean.getRollNo() != null && bean.getRollNo().length() > 0) {
+				sql.append("and roll_no like '" + bean.getRollNo() + "%'");
+			}
+
+		}
 
 		if (pageSize > 0) {
 			pageNo = (pageNo - 1) * pageSize;

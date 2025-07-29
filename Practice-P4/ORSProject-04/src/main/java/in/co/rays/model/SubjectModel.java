@@ -32,11 +32,11 @@ public class SubjectModel {
 	}
 
 	public Long add(SubjectBean bean) throws ApplicationException, DuplicateRecordException {
-		
-		CourseModel courseModel=new CourseModel();
-		CourseBean courseBean=courseModel.findByPk(bean.getCourseId());
+
+		CourseModel courseModel = new CourseModel();
+		CourseBean courseBean = courseModel.findByPk(bean.getCourseId());
 		bean.setCourseName(courseBean.getName());
-		
+
 		SubjectBean existBean = findByName(bean.getName());
 
 		if (existBean != null) {
@@ -81,10 +81,10 @@ public class SubjectModel {
 
 	public void update(SubjectBean bean) throws ApplicationException, DuplicateRecordException {
 
-		CourseModel cModel=new CourseModel();
+		CourseModel cModel = new CourseModel();
 		CourseBean cBean = cModel.findByPk(bean.getCourseId());
 		bean.setCourseName(cBean.getName());
-		
+
 		SubjectBean existBean = findByName(bean.getName());
 
 		if (existBean != null && existBean.getId() != bean.getId()) {
@@ -225,6 +225,18 @@ public class SubjectModel {
 
 	public List<SubjectBean> search(SubjectBean bean, int pageNo, int pageSize) throws ApplicationException {
 		StringBuffer sql = new StringBuffer("select * from st_subject where 1=1 ");
+
+		if (bean != null) {
+
+			if (bean.getId() > 0) {
+				sql.append("and id = " + bean.getId());
+			}
+
+			if (bean.getCourseId() > 0) {
+				sql.append("and course_id = " + bean.getCourseId());
+			}
+
+		}
 
 		if (pageSize > 0) {
 			pageNo = (pageNo - 1) * pageSize;

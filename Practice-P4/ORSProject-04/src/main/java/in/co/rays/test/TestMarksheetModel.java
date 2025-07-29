@@ -13,13 +13,13 @@ import in.co.rays.model.MarksheetModel;
 public class TestMarksheetModel {
 
 	public static void main(String[] args) throws Exception {
-		testNextPk();
+		// testNextPk();
 //		testAdd();
-//		testUpdate();
+		testUpdate();
 //		testDelete();
-		testFindByPk();
-		testFindByRollNo();;
-//		testSearch();
+//		testFindByPk();
+//		testFindByRollNo();
+		// testSearch();
 	}
 
 	private static void testNextPk() throws ApplicationException {
@@ -32,7 +32,7 @@ public class TestMarksheetModel {
 	private static void testAdd() throws ApplicationException, DuplicateRecordException {
 		MarksheetBean bean = new MarksheetBean();
 		MarksheetModel model = new MarksheetModel();
-		
+
 		bean.setRollNo("RT102");
 		bean.setStudentId(5);
 		bean.setPhysics(55);
@@ -50,9 +50,9 @@ public class TestMarksheetModel {
 		MarksheetBean bean = new MarksheetBean();
 		MarksheetModel model = new MarksheetModel();
 
-		bean.setId(6);
-		bean.setRollNo("RT101");
-		bean.setStudentId(1);
+		bean.setId(2);
+		bean.setRollNo("RT102");
+		bean.setStudentId(3);
 		bean.setPhysics(65);
 		bean.setChemistry(62);
 		bean.setMaths(82);
@@ -60,14 +60,14 @@ public class TestMarksheetModel {
 		bean.setModifiedBy("chetan@gmail.com");
 		bean.setCreatedDatetime(new Timestamp(new Date().getTime()));
 		bean.setModifiedDatetime(new Timestamp(new Date().getTime()));
-		
+
 		model.update(bean);
 	}
 
 	private static void testDelete() throws ApplicationException {
 		MarksheetBean bean = new MarksheetBean();
 		MarksheetModel model = new MarksheetModel();
-		
+
 		bean.setId(2);
 		model.delete(bean);
 	}
@@ -88,7 +88,7 @@ public class TestMarksheetModel {
 			System.out.print("\t" + bean.getModifiedBy());
 			System.out.print("\t" + bean.getCreatedDatetime());
 			System.out.println("\t" + bean.getModifiedDatetime());
-		}else {
+		} else {
 			System.out.println("Record not Found");
 		}
 	}
@@ -109,7 +109,7 @@ public class TestMarksheetModel {
 			System.out.print("\t" + bean.getModifiedBy());
 			System.out.print("\t" + bean.getCreatedDatetime());
 			System.out.println("\t" + bean.getModifiedDatetime());
-		}else {
+		} else {
 			System.out.println("Record not Found");
 		}
 
@@ -139,5 +139,5 @@ public class TestMarksheetModel {
 		}
 
 	}
-	
+
 }

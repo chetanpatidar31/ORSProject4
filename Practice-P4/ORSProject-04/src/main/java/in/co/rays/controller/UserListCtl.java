@@ -59,11 +59,6 @@ public class UserListCtl extends BaseCtl {
 			List<UserBean> list = model.search(bean, pageNo, pageSize);
 			List<UserBean> next = model.search(bean, pageNo + 1, pageSize);
 
-			System.out.print("next is empty : ");
-			System.out.println(next.isEmpty() ? true : false);
-
-			System.out.println("is null :" + next == null ? true : false);
-
 			if (list == null || list.isEmpty()) {
 				ServletUtility.setErrorMessage("No record found", request);
 			}
@@ -73,8 +68,6 @@ public class UserListCtl extends BaseCtl {
 			ServletUtility.setPageSize(pageSize, request);
 			ServletUtility.setBean(bean, request);
 			request.setAttribute("nextListSize", next.size());
-
-			ServletUtility.forward(getView(), request, response);
 
 		} catch (ApplicationException e) {
 

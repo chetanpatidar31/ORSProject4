@@ -204,6 +204,18 @@ public class TimetableModel {
 
 	public List<TimetableBean> search(TimetableBean bean, int pageNo, int pageSize) throws ApplicationException {
 		StringBuffer sql = new StringBuffer("select * from st_timetable where 1=1");
+		
+		if (bean != null) {
+			
+			if (bean.getSubjectId() > 0) {
+				sql.append("and subject_id = " + bean.getSubjectId());
+			}
+
+			if (bean.getCourseId() > 0) {
+				sql.append("and course_id = " + bean.getCourseId());
+			}
+			
+		}
 
 		if (pageSize > 0) {
 			pageNo = (pageNo - 1) * pageSize;
@@ -235,10 +247,10 @@ public class TimetableModel {
 				bean.setModifiedDatetime(rs.getTimestamp(13));
 
 				list.add(bean);
-				
-				JDBCDataSource.closeConnection(rs, pstmt);
 			}
+			JDBCDataSource.closeConnection(rs, pstmt);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new ApplicationException("Exception in search Timetable");
 		} finally {
 			JDBCDataSource.closeConnection(conn);

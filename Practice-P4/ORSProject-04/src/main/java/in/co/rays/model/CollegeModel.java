@@ -219,6 +219,17 @@ public class CollegeModel {
 	public List<CollegeBean> search(CollegeBean bean, int pageNo, int pageSize) throws ApplicationException {
 		StringBuffer sql = new StringBuffer("select * from st_college where 1=1 ");
 
+		if (bean != null) {
+
+			if (bean.getId() > 0) {
+				sql.append("and id = " + bean.getId());
+			}
+
+			if (bean.getCity() != null && bean.getCity().length() > 0) {
+				sql.append("and city like '" + bean.getCity() + "%'");
+			}
+		}
+
 		if (pageSize > 0) {
 			pageNo = (pageNo - 1) * pageSize;
 			sql.append(" limit " + pageNo + ", " + pageSize);
@@ -227,7 +238,7 @@ public class CollegeModel {
 		Connection conn = null;
 		List<CollegeBean> list = new ArrayList<CollegeBean>();
 		try {
-			conn=JDBCDataSource.getConnection();
+			conn = JDBCDataSource.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
 			ResultSet rs = pstmt.executeQuery();
 
@@ -250,6 +261,7 @@ public class CollegeModel {
 
 			JDBCDataSource.closeConnection(rs, pstmt);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new ApplicationException("Exception in college search");
 		} finally {
 			JDBCDataSource.closeConnection(conn);
