@@ -16,7 +16,7 @@ public class TestTimetableModel {
 	public static void main(String[] args) throws Exception {
 		testNextPk();
 //		testAdd();
-//		testUpdate();
+		testUpdate();
 //		testDelete();
 //		testFindByPk();
 //		testSearch();
@@ -53,13 +53,13 @@ public class TestTimetableModel {
 		TimetableModel model = new TimetableModel();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-		bean.setId(6);
+		bean.setId(1);
 		bean.setSemester("1st");
 		bean.setDescription("Semester");
 		bean.setExamDate(sdf.parse("2025-07-02"));
-		bean.setExamTime("9 to 12");
-		bean.setCourseId(6);
-		bean.setSubjectId(2);
+		bean.setExamTime("01:00 PM to 04:00 PM");
+		bean.setCourseId(1);
+		bean.setSubjectId(1);
 		bean.setCreatedBy("chetan@gmail.com");
 		bean.setModifiedBy("chetan@gmail.com");
 		bean.setCreatedDatetime(new Timestamp(new Date().getTime()));

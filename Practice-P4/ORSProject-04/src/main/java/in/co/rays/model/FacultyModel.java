@@ -33,7 +33,7 @@ public class FacultyModel {
 		return pk + 1;
 	}
 
-	public void add(FacultyBean bean) throws DuplicateRecordException, ApplicationException {
+	public void add(FacultyBean bean) throws ApplicationException, DuplicateRecordException {
 
 		CollegeModel clgModel = new CollegeModel();
 		CollegeBean clgBean = clgModel.findByPk(bean.getCollegeId());

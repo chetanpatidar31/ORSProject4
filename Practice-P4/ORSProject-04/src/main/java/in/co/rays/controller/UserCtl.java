@@ -42,7 +42,7 @@ public class UserCtl extends BaseCtl {
 			request.setAttribute("firstName", PropertyReader.getValue("error.require", "First Name"));
 			isValid = false;
 		} else if (!DataValidator.isName(request.getParameter("firstName"))) {
-			request.setAttribute("firstName", PropertyReader.getValue("error.invalid", "First Name"));
+			request.setAttribute("firstName", PropertyReader.getValue("error.name", "First Name"));
 			isValid = false;
 		}
 
@@ -50,7 +50,7 @@ public class UserCtl extends BaseCtl {
 			request.setAttribute("lastName", PropertyReader.getValue("error.require", "Last Name"));
 			isValid = false;
 		} else if (!DataValidator.isName(request.getParameter("lastName"))) {
-			request.setAttribute("lastName", PropertyReader.getValue("error.invalid", "Last Name"));
+			request.setAttribute("lastName", PropertyReader.getValue("error.name", "Last Name"));
 			isValid = false;
 		}
 

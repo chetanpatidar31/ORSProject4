@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import in.co.rays.bean.CourseBean;
@@ -196,11 +197,172 @@ public class TimetableModel {
 
 		return bean;
 	}
+	
+	public TimetableBean checkByCourseName(Long courseId, Date examDate) throws ApplicationException {
+		StringBuffer sql = new StringBuffer("select * from st_timetable where course_id = ? and exam_date = ?");
+		TimetableBean bean = null;
+		Connection conn = null;
+
+		try {
+			conn = JDBCDataSource.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setLong(1, courseId);
+			pstmt.setDate(2, new java.sql.Date(examDate.getTime()));
+
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				bean = new TimetableBean();
+				bean.setId(rs.getLong(1));
+				bean.setSemester(rs.getString(2));
+				bean.setDescription(rs.getString(3));
+				bean.setExamDate(rs.getDate(4));
+				bean.setExamTime(rs.getString(5));
+				bean.setCourseId(rs.getLong(6));
+				bean.setCourseName(rs.getString(7));
+				bean.setSubjectId(rs.getLong(8));
+				bean.setSubjectName(rs.getString(9));
+				bean.setCreatedBy(rs.getString(10));
+				bean.setModifiedBy(rs.getString(11));
+				bean.setCreatedDatetime(rs.getTimestamp(12));
+				bean.setModifiedDatetime(rs.getTimestamp(13));
+			}
+			JDBCDataSource.closeConnection(rs, pstmt);
+		} catch (Exception e) {
+			throw new ApplicationException("Exception : Exception in get Timetable");
+
+		} finally {
+			JDBCDataSource.closeConnection(conn);
+		}
+		return bean;
+	}
+
+	public TimetableBean checkBySubjectName(Long courseId, Long subjectId, Date examDate) throws ApplicationException {
+		StringBuffer sql = new StringBuffer(
+				"select * from st_timetable where course_id = ? and subject_id = ? and exam_date = ?");
+		TimetableBean bean = null;
+		Connection conn = null;
+
+		try {
+			conn = JDBCDataSource.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setLong(1, courseId);
+			pstmt.setLong(2, subjectId);
+			pstmt.setDate(3, new java.sql.Date(examDate.getTime()));
+
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				bean = new TimetableBean();
+				bean.setId(rs.getLong(1));
+				bean.setSemester(rs.getString(2));
+				bean.setDescription(rs.getString(3));
+				bean.setExamDate(rs.getDate(4));
+				bean.setExamTime(rs.getString(5));
+				bean.setCourseId(rs.getLong(6));
+				bean.setCourseName(rs.getString(7));
+				bean.setSubjectId(rs.getLong(8));
+				bean.setSubjectName(rs.getString(9));
+				bean.setCreatedBy(rs.getString(10));
+				bean.setModifiedBy(rs.getString(11));
+				bean.setCreatedDatetime(rs.getTimestamp(12));
+				bean.setModifiedDatetime(rs.getTimestamp(13));
+			}
+			JDBCDataSource.closeConnection(rs, pstmt);
+		} catch (Exception e) {
+			throw new ApplicationException("Exception : Exception in get Timetable");
+
+		} finally {
+			JDBCDataSource.closeConnection(conn);
+		}
+		return bean;
+	}
+
+	public TimetableBean checkBySemester(Long courseId, Long subjectId, String semester, Date examDate)
+			throws ApplicationException {
+		StringBuffer sql = new StringBuffer(
+				"select * from st_timetable where course_id = ? and subject_id = ? and semester = ? and exam_date = ?");
+		TimetableBean bean = null;
+		Connection conn = null;
+
+		try {
+			conn = JDBCDataSource.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setLong(1, courseId);
+			pstmt.setLong(2, subjectId);
+			pstmt.setString(3, semester);
+			pstmt.setDate(4, new java.sql.Date(examDate.getTime()));
+
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				bean = new TimetableBean();
+				bean.setId(rs.getLong(1));
+				bean.setSemester(rs.getString(2));
+				bean.setDescription(rs.getString(3));
+				bean.setExamDate(rs.getDate(4));
+				bean.setExamTime(rs.getString(5));
+				bean.setCourseId(rs.getLong(6));
+				bean.setCourseName(rs.getString(7));
+				bean.setSubjectId(rs.getLong(8));
+				bean.setSubjectName(rs.getString(9));
+				bean.setCreatedBy(rs.getString(10));
+				bean.setModifiedBy(rs.getString(11));
+				bean.setCreatedDatetime(rs.getTimestamp(12));
+				bean.setModifiedDatetime(rs.getTimestamp(13));
+			}
+			JDBCDataSource.closeConnection(rs, pstmt);
+		} catch (Exception e) {
+			throw new ApplicationException("Exception : Exception in get Timetable");
+		} finally {
+			JDBCDataSource.closeConnection(conn);
+		}
+		return bean;
+	}
+
+	public TimetableBean checkByExamTime(Long courseId, Long subjectId, String semester, Date examDate, String examTime,
+			String description) throws ApplicationException {
+		StringBuffer sql = new StringBuffer(
+				"select * from st_timetable where course_id = ? and subject_id = ? and semester = ? and exam_date = ? and exam_time = ? and description = ?");
+		TimetableBean bean = null;
+		Connection conn = null;
+
+		try {
+			conn = JDBCDataSource.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setLong(1, courseId);
+			pstmt.setLong(2, subjectId);
+			pstmt.setString(3, semester);
+			pstmt.setDate(4, new java.sql.Date(examDate.getTime()));
+			pstmt.setString(5, examTime);
+			pstmt.setString(6, description);
+
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				bean = new TimetableBean();
+				bean.setId(rs.getLong(1));
+				bean.setSemester(rs.getString(2));
+				bean.setDescription(rs.getString(3));
+				bean.setExamDate(rs.getDate(4));
+				bean.setExamTime(rs.getString(5));
+				bean.setCourseId(rs.getLong(6));
+				bean.setCourseName(rs.getString(7));
+				bean.setSubjectId(rs.getLong(8));
+				bean.setSubjectName(rs.getString(9));
+				bean.setCreatedBy(rs.getString(10));
+				bean.setModifiedBy(rs.getString(11));
+				bean.setCreatedDatetime(rs.getTimestamp(12));
+				bean.setModifiedDatetime(rs.getTimestamp(13));
+			}
+			JDBCDataSource.closeConnection(rs, pstmt);
+		} catch (Exception e) {
+			throw new ApplicationException("Exception : Exception in get Timetable");
+		} finally {
+			JDBCDataSource.closeConnection(conn);
+		}
+		return bean;
+	}
 
 	public List<TimetableBean> list() throws ApplicationException {
 		return search(null, 0, 0);
 	}
-
 
 	public List<TimetableBean> search(TimetableBean bean, int pageNo, int pageSize) throws ApplicationException {
 		StringBuffer sql = new StringBuffer("select * from st_timetable where 1=1");
@@ -208,11 +370,15 @@ public class TimetableModel {
 		if (bean != null) {
 			
 			if (bean.getSubjectId() > 0) {
-				sql.append("and subject_id = " + bean.getSubjectId());
+				sql.append(" and subject_id = " + bean.getSubjectId());
 			}
 
 			if (bean.getCourseId() > 0) {
-				sql.append("and course_id = " + bean.getCourseId());
+				sql.append(" and course_id = " + bean.getCourseId());
+			}
+			
+			if (bean.getExamDate() != null && bean.getExamDate().getTime() > 0) {
+				sql.append(" and exam_date like '" + new java.sql.Date(bean.getExamDate().getTime()) + "%'");
 			}
 			
 		}
